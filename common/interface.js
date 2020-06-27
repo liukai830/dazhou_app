@@ -31,7 +31,7 @@ http.delete('user/1').then((res)=>{
 */
 let BASE_URL = ''
 if (process.env.NODE_ENV === 'development') {
-  BASE_URL = 'http://192.168.1.241/jfly.openapi/' //dev环境接口
+  BASE_URL = 'http://www.hzingsys.com:20000/jfly.openapi/' //dev环境接口
 } else {
   BASE_URL = 'http://172.16.254.4:8087/' //正式生产环境
 }

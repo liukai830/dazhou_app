@@ -31,13 +31,18 @@
 			this.isLogin();
 		},
 		methods: {
+			isObjEmpty(obj) {
+				for(var key in obj) {
+					return false;
+				}
+				return true;
+			},
 			isLogin(){
 				// 判断缓存中是否登录过，直接登录
 				try {
 					const value = uni.getStorageSync('currentUser');
-					if (value) {
+					if (value && !_this.isObjEmpty(value)) {
 						//有登录信息
-						console.log("已登录用户：",value);
 						_this.$store.commit("setUserData",{currentUser:value}); //存入状态
 						uni.reLaunch({
 							url: '/pages/index/index',
@@ -74,16 +79,16 @@
 				// 	title: '登录中'
 				// });
 				api.login({'userIds':this.userId,'password':this.password,'isCardNo': false}).then(res => {
-					console.log('res='+res)
-					if(!res.data.success) {
+					let resdata = res.data;
+					if(!resdata.success) {
 						uni.showToast({
 							icon: 'none',
 							position: 'bottom',
-							title: res.data.msg || '接口异常'
+							title: resdata.msg || '接口异常'
 						});
 						return
 					}
-					if(!res.data.data) {
+					if(!resdata.data) {
 						this.$refs.uToast.show({
 							title: '用户名或密码错误',
 							type: 'error', 
@@ -91,10 +96,10 @@
 						return;
 					}
 					let userdata = {
-						"userId": res.data.data.userId,
-						"userName": res.data.data.userName,
-						"roles": res.data.data.roles,
-						"rolenames": res.data.data.rolenames
+						"userId": resdata.data.userId,
+						"userName": resdata.data.userName,
+						"roles": resdata.data.roles,
+						"rolenames": resdata.data.rolenames
 					}
 					_this.$store.dispatch("setUserDataAsync",{currentUser:userdata}); //存入状态
 					try {
@@ -105,7 +110,8 @@
 						title: '登录成功',
 						type: 'success', 
 						url: '/pages/index/index',
-						duration: 500
+						duration: 500,
+						isTab: true
 					})			
 				})
 
