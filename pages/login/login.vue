@@ -75,10 +75,11 @@
 				setTimeout(function(){
 					_this.isClicked=false
 				},3000)
-				// uni.showLoading({
-				// 	title: '登录中'
-				// });
-				api.login({'userIds':this.userId,'password':this.password,'isCardNo': false}).then(res => {
+				this.$refs.uToast.show({
+					title: '登陆中',
+					type: 'default'
+				})	
+				api.login({'userID':this.userId,'password':this.password}).then(res => {
 					let resdata = res.data;
 					if(!resdata.success) {
 						uni.showToast({
@@ -88,18 +89,19 @@
 						});
 						return
 					}
-					if(!resdata.data) {
+					if(!resdata.data || resdata.data.length===0) {
 						this.$refs.uToast.show({
 							title: '用户名或密码错误',
 							type: 'error', 
 						})
 						return;
 					}
+					debugger
 					let userdata = {
-						"userId": resdata.data.userId,
-						"userName": resdata.data.userName,
-						"roles": resdata.data.roles,
-						"rolenames": resdata.data.rolenames
+						"userId": resdata.data[0].userID,
+						"userName": resdata.data[0].userName,
+						"roles": resdata.data[0].roles,
+						"rolenames": resdata.data[0].rolenames
 					}
 					_this.$store.dispatch("setUserDataAsync",{currentUser:userdata}); //存入状态
 					try {
@@ -111,10 +113,9 @@
 						type: 'success', 
 						url: '/pages/index/index',
 						duration: 500,
-						isTab: true
+						isTab: false
 					})			
-				})
-
+				})		
 			}
 		}
 	}

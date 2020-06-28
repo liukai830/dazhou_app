@@ -2,7 +2,7 @@
 	<view>
 		<ingsysNavbar title="流程监控" />
 		<u-cell-group>
-			<u-cell-item v-for="item in flowList" :title="item.name" value="查看详情"></u-cell-item>
+			<u-cell-item v-for="(item,index) in flowList" :title="item.name" value="查看详情" :key="index"></u-cell-item>
 		</u-cell-group>
 	</view>
 </template>
