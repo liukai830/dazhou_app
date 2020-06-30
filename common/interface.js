@@ -94,8 +94,24 @@ export default {
 				// 统一的响应日志记录
 				_reslog(response)
 				if (statusCode === 200) { //成功
-					resolve(response);
+					if(response.data.success) {
+						resolve(response);
+					} else {
+						uni.showToast({
+							icon: 'none',
+							position: 'bottom',
+							title: response.data.msg || '接口返回error!',
+							duration: 3000
+						});
+						reject(response)
+					}
 				} else {
+					uni.showToast({
+						icon: 'none',
+						position: 'bottom',
+						title: '接口异常:' + statusCode,
+						duration: 3000
+					});
 					reject(response)
 				}
 			}

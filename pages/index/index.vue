@@ -13,7 +13,7 @@
 				<view class="iconfont" style="color: #78b3ff; fontSize: 66rpx">&#xe611</view>
 				<view class="grid-text">质量报警</view>
 			</u-grid-item>
-			<u-grid-item>
+			<u-grid-item @click="menuClick('/pages/quality-check/quality-check')">
 				<view class="iconfont" style="color: #ff7d7d; fontSize: 66rpx">&#xe62f</view>
 				<view class="grid-text">质检数据</view>
 			</u-grid-item>

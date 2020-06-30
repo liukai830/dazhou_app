@@ -3,8 +3,8 @@
 		<image src="/static/imgs/zaizai-login/login.png" mode='aspectFit' class="zai-logo"></image>
 		<view class="zai-title">LOGO区域</view>
 		<view>
-				<u-toast ref="uToast" />
-			</view>
+			<u-toast ref="uToast" />
+		</view>
 		<view class="zai-form">
 			<input v-model="userId" class="zai-input" placeholder="请输入用户名" />
 			<input v-model="password" class="zai-input" password placeholder="请输入密码"/>
@@ -96,7 +96,6 @@
 						})
 						return;
 					}
-					debugger
 					let userdata = {
 						"userId": resdata.data[0].userID,
 						"userName": resdata.data[0].userName,

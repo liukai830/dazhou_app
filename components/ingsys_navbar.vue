@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<u-navbar back-text="返回" :title="title" :background="background">
+			<slot></slot>
 		</u-navbar>
 	</view>
 </template>
