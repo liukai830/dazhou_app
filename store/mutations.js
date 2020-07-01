@@ -1,6 +1,10 @@
 const mutations = {
 	setUserData(state, payload) {
-		state.userDate = payload.currentUser
+		state.currentUser = payload.currentUser
+	},
+	
+	setAlarmTechItem(state, payload) {
+		state.currentTechAlarmItem = payload.item
 	}
 }
 

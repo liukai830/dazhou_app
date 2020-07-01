@@ -10,7 +10,7 @@
 
 <script>
 	var _this;
-	import ingsysNavbar from "../../components/ingsys_navbar.vue"
+	import ingsysNavbar from "@/components/ingsys_navbar.vue"
 	export default {
 		components: {
 			ingsysNavbar
@@ -20,12 +20,12 @@
 				flowList: []
 			}
 		},
-		mounted() {
+		onLoad() {
 			_this= this;
-			_this.getTechAlarmData();
+			_this.getFlowListData();
 		},
 		methods: {
-			getTechAlarmData() {
+			getFlowListData() {
 				this.flowList = [{name: '磷酸二铵'}, {name: '磷酸装置'}, {name: '净化磷酸装置'}, {name: '公用工程'}]
 			}
 		}

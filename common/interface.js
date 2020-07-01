@@ -80,11 +80,11 @@ export default {
 			options.complete = (response) => {
 				let statusCode = response.statusCode
 				response.config = _config
-				if (process.env.NODE_ENV === 'development') {
-					if (statusCode === 200) {
-						console.log("【" + _config.requestId + "】 结果：" + JSON.stringify(response.data))
-					}
-				}
+				// if (process.env.NODE_ENV === 'development') {
+				// 	if (statusCode === 200) {
+				// 		console.log("【" + _config.requestId + "】 结果：" + JSON.stringify(response.data))
+				// 	}
+				// }
 				if (this.interceptor.response) {
 					let newResponse = this.interceptor.response(response)
 					if (newResponse) {
@@ -187,10 +187,10 @@ function _reqlog(req) {
 function _reslog(res) {
 	let _statusCode = res.statusCode;
 	if (process.env.NODE_ENV === 'development') {
-		console.log("【" + res.config.requestId + "】 地址：" + res.config.url)
-		if (res.config.data) {
-			console.log("【" + res.config.requestId + "】 请求参数：" + JSON.stringify(res.config.data))
-		}
+		// console.log("【" + res.config.requestId + "】 地址：" + res.config.url)
+		// if (res.config.data) {
+		// 	console.log("【" + res.config.requestId + "】 请求参数：" + JSON.stringify(res.config.data))
+		// }
 		console.log("【" + res.config.requestId + "】 响应结果：" + JSON.stringify(res))
 	}
 	//TODO 除了接口服务错误外，其他日志调接口异步写入日志数据库

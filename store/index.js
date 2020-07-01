@@ -6,7 +6,8 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const state = {
-	currentUser: null
+	currentUser: null,
+	currentTechAlarmItem: null
 }
 
 const store = new Vuex.Store({
