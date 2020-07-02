@@ -50,23 +50,14 @@
 		 },
 		methods: {
 			getStoreData() {
-				http.post('Api/Machine/GetStorageList').then(res => {
-					console.log(res)
-				})
+				uni.showLoading({
+				  title: '加载中'
+				});
 				api.getStoreList().then(res => {
-					let resdata = res.data;
-					// if(!resdata.success) {
-					// 	uni.showToast({
-					// 		icon: 'none',
-					// 		position: 'bottom',
-					// 		title: resdata.msg || '接口异常'
-					// 	});
-					// 	this.lastTime = ['查询时间：'+resdata.msg];
-					// 	return
-					// }
-					
-					this.storeList = resdata.data;
-					this.lastTime = ['查询时间：'+resdata.lastTime];
+					let resdata = res.data;					
+					_this.storeList = resdata.data;
+					_this.lastTime = ['查询时间：'+resdata.lastTime+'，共 '+_this.storeList.length+' 条数据'];
+					uni.hideLoading()
 					uni.stopPullDownRefresh();  //停止下拉刷新动画
 				})
 			}

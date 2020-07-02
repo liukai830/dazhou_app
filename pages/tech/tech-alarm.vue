@@ -12,7 +12,7 @@
 			<u-empty text="工艺报警数据为空" mode="list"></u-empty>
 		</view>
 		<view v-else>
-			<u-card v-for="(item,index) in techAlarmList" :title="item.departMent" :sub-title="item.v5+item.v12" :key="index" @click="cardClick(item)">
+			<u-card v-for="(item,index) in techAlarmList" :title="item.departMent" :sub-title="item.v5+' '+item.v12" :key="index" @click="cardClick(item)">
 				<view class="" slot="body">
 					<view>
 						<view><text space='ensp'>开始时间：{{item.date2}}  等级：<text style="color: red;">{{item.v7}}</text></text></view>
@@ -61,7 +61,7 @@
 				    title: '加载中'
 				});
 				setTimeout(function () {
-				    uni.hideLoading();
+				  uni.hideLoading();
 				}, 10000);
 				// 先获取当前登录用户id和所有的角色信息
 				let currentUser = uni.getStorageSync('currentUser');
@@ -105,15 +105,19 @@
 			},
 			cardClick(item){
 				let params = {
-					v13: item.v13,
+					v2: item.v2,			// 报警编号
+					v3: item.v3, 			// 拟票人
+					date1: item.date1,// 拟票时间
+					date2: item.date2,
+					uDF1: item.uDF1,
 					departMent: item.departMent,	// 装置名称
-					v5: item.v5,		// 指标名称
-					v4: item.v4,		// 指标位号
-					v7: item.v7, 	// 指标类别
-					v6: item.v6,		// 班组
-					v12: item.v12,	// 报警类型
-					v11: item.v11,	// 指标范围
-					v14: item.v14,	// 工程单位
+					v5: item.v5,			// 指标名称
+					v4: item.v4,			// 指标位号
+					v7: item.v7, 			// 指标类别
+					v6: item.v6,			// 班组
+					v12: item.v12,		// 报警类型
+					v11: item.v11,		// 指标范围
+					v14: item.v14,		// 工程单位
 					roleGId: item.queryRoleGId,
 					tableFlag: item.tableFlag,
 					gID: item.gID
@@ -130,7 +134,9 @@
 					return hour
 				}
 				let min = hour*60;
-				if(min >= 1) {
+				if(hour > 1) {
+					return hour.toFixed(1) + '时'
+				} else if(min >= 1) {
 					return Math.floor(min) + '分'
 				} else {
 					return Math.floor(min*60) + '秒'

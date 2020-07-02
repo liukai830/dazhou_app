@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<view v-if="content===''">
+			<u-gap height="100" bg-color="#ffffff"></u-gap>
 			<u-empty :text="'暂无'+reportName" mode="data"></u-empty>
 		</view>
 		<view v-else>

@@ -28,7 +28,7 @@
 			</u-grid-item>
 			<u-grid-item>
 				<view class="iconfont" style="color: #00aa00; fontSize: 66rpx">&#xe6ac</view>
-				<view class="grid-text">代办事项</view>
+				<view class="grid-text">待办事项</view>
 			</u-grid-item>
 		</u-grid>
 		<u-gap height="10" bg-color="#ffffff"></u-gap>
@@ -42,7 +42,6 @@
 		<u-gap height="10" bg-color="#ffffff"></u-gap>
 		<!-- 班报、日报、月报 -->
 		<u-tabs :list="tabNames" :is-scroll="false" :current="currentTab" @change="tabChange"></u-tabs>
-		<u-gap height="10" bg-color="#ffffff"></u-gap>
 		<ingsysReport :content="reports[currentTab]" :reportName="tabNames[currentTab].name"></ingsysReport>
 		
 	</view>
@@ -76,7 +75,8 @@
 				],
 				tabNames: [{name: '班报'}, {name: '日报'}, {name: '月报'}],
 				currentTab: 0,
-				reports: ['这是班报','这是日报','这是月报']
+				// reports: ['这是班报','这是日报','这是月报']
+				reports: []
 			}
 		},
 		methods: {
