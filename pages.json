@@ -51,6 +51,13 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path": "pages/todo/todo",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
 		}
 	],
 	// "tabBar": {

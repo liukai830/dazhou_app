@@ -120,7 +120,7 @@
 								type: 'success'
 							})
 							setTimeout(() => {
-								uni.$emit('updateTechAlatmData')
+								uni.$emit('updateTechAlarmData')
 								uni.navigateBack()
 							}, 500);
 						} else {

@@ -75,6 +75,9 @@
     "h5" : {
         "devServer" : {
             "port" : 8888
+        },
+        "router" : {
+            "mode" : "history"
         }
     }
 }

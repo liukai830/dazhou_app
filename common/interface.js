@@ -103,6 +103,8 @@ export default {
 							title: response.data.msg || '接口返回error!',
 							duration: 3000
 						});
+						uni.stopPullDownRefresh();
+						uni.hideLoading();
 						reject(response)
 					}
 				} else {
@@ -112,6 +114,8 @@ export default {
 						title: '接口异常:' + statusCode,
 						duration: 3000
 					});
+					uni.stopPullDownRefresh();
+					uni.hideLoading();
 					reject(response)
 				}
 			}

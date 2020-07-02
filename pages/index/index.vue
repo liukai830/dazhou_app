@@ -26,20 +26,20 @@
 				<view class="iconfont" style="color: #ffb367; fontSize: 66rpx">&#xe62c</view>
 				<view class="grid-text">库存查询</view>
 			</u-grid-item>
-			<u-grid-item>
+			<u-grid-item  @click="menuClick('/pages/todo/todo')">
 				<view class="iconfont" style="color: #00aa00; fontSize: 66rpx">&#xe6ac</view>
 				<view class="grid-text">待办事项</view>
 			</u-grid-item>
 		</u-grid>
-		<u-gap height="10" bg-color="#ffffff"></u-gap>
+		<u-gap height="10" bg-color="#fff"></u-gap>
 		<u-line color="#4ca2f9" />
 		<u-grid :col="3" :border="true" >
-			<u-grid-item v-for="(item,index) in items" :key="index">
-				<u-tag :text="item.name" :type="item.alarm | alarmType" />
+			<u-grid-item v-for="(point,index) in pointList" :key="index">
+				<u-tag :text="point.name" :type="point.alarm | alarmType" />
 			</u-grid-item>
 		</u-grid>
 		<u-line color="#4ca2f9" />
-		<u-gap height="10" bg-color="#ffffff"></u-gap>
+		<u-gap height="10" bg-color="#fff"></u-gap>
 		<!-- 班报、日报、月报 -->
 		<u-tabs :list="tabNames" :is-scroll="false" :current="currentTab" @change="tabChange"></u-tabs>
 		<ingsysReport :content="reports[currentTab]" :reportName="tabNames[currentTab].name"></ingsysReport>
@@ -49,9 +49,12 @@
 
 <script>
 	import ingsysReport from "@/components/ingsys_report.vue"
+	import api from "@/api/index.js"
+	
 	export default {
 		onLoad() {
-
+			this.loadPointStatus()
+			this.loadReports()
 		},
 		components: {
 			ingsysReport
@@ -62,16 +65,16 @@
 					// 渐变色
 					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
 				},
-				items: [
-					{name: '磷酸二铵', alarm: false},
-					{name: 'PA浓缩B', alarm: false},
-					{name: 'PPA反应', alarm: false},
-					{name: 'PA反应过滤', alarm: false},
-					{name: 'PA浓缩C', alarm: true},
-					{name: 'PPA后处理', alarm: false},
-					{name: 'PA浓缩A', alarm: false},
-					{name: 'PPA预处理', alarm: false},
-					{name: '公用工程', alarm: true}
+				pointList: [
+					// {name: '磷酸二铵', alarm: false},
+					// {name: 'PA浓缩B', alarm: false},
+					// {name: 'PPA反应', alarm: false},
+					// {name: 'PA反应过滤', alarm: false},
+					// {name: 'PA浓缩C', alarm: true},
+					// {name: 'PPA后处理', alarm: false},
+					// {name: 'PA浓缩A', alarm: false},
+					// {name: 'PPA预处理', alarm: false},
+					// {name: '公用工程', alarm: true}
 				],
 				tabNames: [{name: '班报'}, {name: '日报'}, {name: '月报'}],
 				currentTab: 0,
@@ -87,6 +90,12 @@
 				uni.navigateTo({
 				    url: url
 				});
+			},
+			loadPointStatus() {
+				this.pointList = api.getPointStatus()
+			},
+			loadReports() {
+				api.getReports()
 			}
 		},
 		filters: {
