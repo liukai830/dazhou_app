@@ -12,7 +12,7 @@ export const getMultiRoleTechAlarmList = (paramArray) => {
 }
 
 /* 处理工艺报警信息 */
-export const handleTechAlarm = (params) => {
+export const handleTechAlarm = (param) => {
 	return http.post('Api/Machine/HandleProcess', param)
 }
 

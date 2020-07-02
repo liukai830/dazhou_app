@@ -3,6 +3,10 @@
 		<view>
 			<ingsysNavbar title="工艺报警处理" />
 		</view>
+		<view>
+			<u-toast ref="uToast" />
+		</view>
+			
 		<u-divider>报警信息</u-divider>
 		{{item.v13}}
 		<u-form :model="item" ref="uForm" :errorType="errorType">
@@ -26,22 +30,14 @@
 			</u-form-item>
 		</u-form>
 		
-<!-- 		<button type="primary" size="medium">确认</button>
-		<button type="default" size="medium">取消</button>
-		<u-row gutter="16">
-			<u-col span="5">
-				<button type="primary" size="medium">确认</button>
-			</u-col>
-			<u-col span="5">
-				<button type="default" size="medium">取消</button>
-			</u-col>
-		</u-row> -->
 		
 	</view>
 </template>
 
 <script>
 	import ingsysNavbar from "@/components/ingsys_navbar.vue"
+	import api from "@/api/tech-alarm.js"
+	
 	let _this;
 	export default {
 		components: {
@@ -94,12 +90,40 @@
 					if(_this.loading) {
 						return;
 					}
+					
+					let currentUser = uni.getStorageSync('currentUser');
+					let params = [{
+						roleGId: _this.item.roleGId,
+						tableFlag: _this.item.tableFlag,
+						userID: currentUser.userId,
+						userName: currentUser.userName,
+						gID: _this.item.gID,
+						count: _this.item.count
+					}]
+					
 					_this.loading = true;
-					setTimeout(function() {
+					setTimeout(() => {
 					  _this.loading = false;
-					}, 2000);
+					}, 3000);
 					
-					
+					api.handleTechAlarm(params).then(res => {
+						_this.loading = false;
+						if(res.data.success) {
+							this.$refs.uToast.show({
+								title: '处理成功',
+								type: 'success'
+							})
+							setTimeout(() => {
+								uni.$emit('updateTechAlatmData')
+								uni.navigateBack()
+							}, 500);
+						} else {
+							this.$refs.uToast.show({
+								title: res.data.message || '处理失败，接口返回false',
+								type: 'error'
+							})
+						}
+					})
 				});
 			},
 			cancel() {

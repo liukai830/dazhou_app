@@ -1,7 +1,10 @@
 <template>
 	<view>
-<!-- 		<u-navbar title="dazhou-app" :background="background" back-icon-name="list" @custom-back="() => {console.log('adad')}">
-		</u-navbar> -->
+		<u-navbar title="dazhou-app" :background="background" back-icon-name="list" :is-back="false" >
+			<view class="map-wrap">
+				<u-icon name="list" size="36" class="wrap" color="rgb(96, 98, 102)"></u-icon>
+			</view>
+		</u-navbar>
 		<u-grid :col="6" :border="false">
 			<u-grid-item @click="menuClick('/pages/process/process-monitoring')">
 				<view class="iconfont" style="color: #55aaff; font-size: 66rpx;">&#xe685</view>
@@ -95,6 +98,9 @@
 </script>
 
 <style scoped lang="scss">
+	.wrap {
+		padding: 24rpx;
+	}
 	.slot-wrap {
 		display: flex;
 		align-items: center;

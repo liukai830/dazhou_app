@@ -45,7 +45,7 @@
 		mounted() {
 			_this= this;
 			_this.getTechAlarmData();
-			uni.$emit('updateTechAlatmData',_this.getTechAlarmData());
+			uni.$on('updateTechAlatmData',() => {_this.getTechAlarmData()});
 		},
 		methods: {
 			onPageScroll(e) {
@@ -76,6 +76,7 @@
 						processID: 'GYBJ_Process'
 					}
 					api.getSingleRoleTechAlarmList(params).then(res => {
+						res.data.data.forEach(d => {d['queryRoleGId'] = res.config.data.roleGId})
 						_this.techAlarmList = res.data.data;
 						_this.noticeMsg = ['查询时间：'+res.data.lastTime + ', 共'+res.data.code+'条数据!'];
 						uni.stopPullDownRefresh();  //停止下拉刷新动画
