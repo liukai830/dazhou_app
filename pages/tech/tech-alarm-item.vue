@@ -8,7 +8,6 @@
 		</view>
 			
 		<u-divider>报警信息</u-divider>
-		{{item.v13}}
 		<u-form :model="item" ref="uForm" :errorType="errorType">
 			<u-form-item label-width="150" label="装置名称">{{item.departMent}}</u-form-item>
 			<u-form-item label-width="150" label="指标名称">{{item.v5}}</u-form-item>
