@@ -36,7 +36,7 @@
 		<u-line color="#4ca2f9" />
 		<u-grid :col="3" :border="true" >
 			<u-grid-item v-for="(point,index) in pointList" :key="index">
-				<u-tag :text="point.name" :type="point.alarm | alarmType" />
+				<u-tag :text="point.instrName" :type="point.value===1 ? 'success' : 'error'" />
 			</u-grid-item>
 		</u-grid>
 		<u-line color="#4ca2f9" />
@@ -49,16 +49,26 @@
 </template>
 
 <script>
+	var _this;
 	import ingsysReport from "@/components/ingsys_report.vue"
 	import api from "@/api/index.js"
 	
 	export default {
-		onLoad() {
-			this.loadPointStatus()
-			this.loadReports()
+		mounted() {
+			_this= this;
+			_this.loadPointStatus()
+			_this.loadReports()
 		},
 		components: {
 			ingsysReport
+		},
+		onPullDownRefresh() {
+		  //监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+			_this.loadPointStatus();
+			_this.loadReports();
+		  setTimeout(function () {
+				uni.stopPullDownRefresh();  //停止下拉刷新动画
+		  }, 2000);
 		},
 		data() {
 			return {
@@ -67,17 +77,7 @@
 					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
 				},
 				tabNames: [{name: '班报'}, {name: '日报'}, {name: '月报'}],
-				pointList: [
-					// {name: '磷酸二铵', alarm: false},
-					// {name: 'PA浓缩B', alarm: false},
-					// {name: 'PPA反应', alarm: false},
-					// {name: 'PA反应过滤', alarm: false},
-					// {name: 'PA浓缩C', alarm: true},
-					// {name: 'PPA后处理', alarm: false},
-					// {name: 'PA浓缩A', alarm: false},
-					// {name: 'PPA预处理', alarm: false},
-					// {name: '公用工程', alarm: true}
-				],
+				pointList: [],
 				currentTab: 0,
 				// reports: ['这是班报','这是日报','这是月报']
 				reports: []
@@ -85,7 +85,7 @@
 		},
 		methods: {
 			tabChange(index) {
-				this.currentTab = index;
+				_this.currentTab = index;
 			},
 			menuClick(url) {
 				uni.navigateTo({
@@ -93,15 +93,14 @@
 				});
 			},
 			loadPointStatus() {
-				this.pointList = api.getPointStatus()
+				api.getPointStatus().then(res => {
+					_this.pointList = res.data.data.filter(data => 'STAR_STATUS' === data.rTDBTagId || data.rTDBTagId.startsWith('RD_STATUS'))
+					_this.pointList.forEach(data => { data['instrName'] = data.instrName.replace('开停车点','').replace('开停车','')})
+					uni.stopPullDownRefresh();  //停止下拉刷新动画
+				})
 			},
 			loadReports() {
 				api.getReports()
-			}
-		},
-		filters: {
-			alarmType(alarm) {
-				return alarm ? 'error': 'success';
 			}
 		}
 	}

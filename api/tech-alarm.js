@@ -1,4 +1,4 @@
-import http from '../common/interface'
+import http from '@/common/interface'
 
 /* 查询工艺报警信息（单个角色） */
 export const getSingleRoleTechAlarmList = (param) => {

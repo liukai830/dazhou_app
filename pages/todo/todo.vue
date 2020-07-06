@@ -13,11 +13,11 @@
 			<u-empty text="暂无待办事项" mode="list"></u-empty>
 		</view>
 		<view v-else>
-			<u-card v-for="(item,index) in todoList" :title="item.departMent" :sub-title="item.v5+' '+item.v12" :key="index" @click="cardClick(item)">
+			<u-card v-for="(item,index) in todoList" :title="item.processID | processType" :sub-title="item.departMent" :key="index" @click="cardClick(item)">
 				<view class="" slot="body">
 					<view>
-						<view><text space='ensp'>开始时间：{{item.date2}}  等级：<text style="color: red;">{{item.v7}}</text></text></view>
-						<view><text space='ensp'>结束时间：{{item.date3}}  时长：{{item.uDF1 | hour2Minutes}}</text></view>
+						<view><text space='ensp'>发起时间：{{item.date2}} </text></view>
+						<view><text space='ensp'>流程节点 {{item.isOld | processStatus}}  发起人：<text style="color: red;">{{item.v3}}</text></text></view>
 					</view>
 				</view>
 			</u-card>
@@ -84,7 +84,7 @@
 						uni.stopPullDownRefresh();
 					})
 				} else {
-					const paramArray = roleArray.map(role => ({roleGId: role, userID: userId, processID: 'GYBJ_Process'}));
+					const paramArray = roleArray.map(role => ({roleGId: role, userID: userId}));
 					api.getMultiRoleTodoList(paramArray).then(results => {
 						const list = [];
 						// 多角色需要加上查询时候的角色ID，以便后续处理使用
@@ -102,6 +102,30 @@
 						uni.stopPullDownRefresh();
 					})
 				}
+			},
+			cardClick(item){
+				this.$u.route({
+					url: 'pages/todo/todo-item?item=' + encodeURIComponent(JSON.stringify(item))
+				})
+			}
+		},
+		filters: {
+			processStatus(node) {
+				let name = node
+				switch(node) {
+					case 1: name = '审核'; break;
+					case 2: name = '结果反馈'; break;
+					case 3: name = '知会接收'; break;
+				}
+				return name
+			},
+			processType(value) {
+				let name = value
+				switch(value) {
+					case 'DDZX_Process': name = '调度中心'; break;
+					case 'JHTC_Process': name = '计划停车'; break;
+				}
+				return name
 			}
 		}
 	}

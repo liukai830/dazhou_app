@@ -47,7 +47,7 @@
 		  setTimeout(function () {
 				uni.stopPullDownRefresh();  //停止下拉刷新动画
 		  }, 2000);
-		 },
+		},
 		methods: {
 			getStoreData() {
 				uni.showLoading({
