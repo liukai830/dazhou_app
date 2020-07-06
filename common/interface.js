@@ -93,6 +93,7 @@ export default {
 				}
 				// 统一的响应日志记录
 				_reslog(response)
+				
 				if (statusCode === 200) { //成功
 					if(response.data.success) {
 						resolve(response);
@@ -111,7 +112,7 @@ export default {
 					uni.showToast({
 						icon: 'none',
 						position: 'bottom',
-						title: '接口异常:' + statusCode,
+						title: `接口异常【${statusCode||response.errMsg}】`,
 						duration: 3000
 					});
 					uni.stopPullDownRefresh();

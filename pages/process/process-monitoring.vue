@@ -45,6 +45,12 @@
 					})
 				}
 			}
+		},
+		onBackPress(options) {
+			uni.navigateTo({
+			    url: '/pages/index/index'
+			});
+			return true;
 		}
 	}
 

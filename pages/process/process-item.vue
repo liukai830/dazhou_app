@@ -28,6 +28,12 @@
 		},
 		onLoad(option) {
 			this.key = option.key
+		},
+		onBackPress(options) {  
+			uni.navigateTo({
+			    url: '/pages/process/process-monitoring'
+			});
+			return true;
 		}
 	}
 </script>
