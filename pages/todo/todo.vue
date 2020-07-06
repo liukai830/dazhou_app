@@ -79,9 +79,9 @@
 						res.data.data.forEach(d => {d['queryRoleGId'] = res.config.data.roleGId})
 						_this.todoList = res.data.data;
 						_this.noticeMsg = ['查询时间：'+res.data.lastTime + ', 共'+res.data.code+'条数据!'];
-						
+					}).finally(() => {
+						uni.stopPullDownRefresh();  //停止下拉刷新动画
 						uni.hideLoading();
-						uni.stopPullDownRefresh();
 					})
 				} else {
 					const paramArray = roleArray.map(role => ({roleGId: role, userID: userId}));
@@ -94,12 +94,11 @@
 						results.forEach(res => {
 							list.push.apply(list,res.data.data)
 						})
-						
 						_this.todoList = list;
 						_this.noticeMsg = ['查询时间：'+results[0].data.lastTime + ', 共'+list.length+'条数据!'];
-						
+					}).finally(() => {
+						uni.stopPullDownRefresh();  //停止下拉刷新动画
 						uni.hideLoading();
-						uni.stopPullDownRefresh();
 					})
 				}
 			},

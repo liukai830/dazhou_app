@@ -28,6 +28,12 @@
 			}
 		},
 		{
+			"path": "pages/process/process-item",
+			"style": {
+				"navigationBarTitleText":"流程监控"
+			}
+		},
+		{
 			"path": "pages/tech/tech-alarm",
 			"style": {
 				"navigationStyle": "custom",
@@ -38,6 +44,13 @@
 			"path": "pages/tech/tech-alarm-item",
 			"style": {
 				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/quality-alarm/quality-alarm",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true  //设置为true表示当前页面开启下拉刷新
 			}
 		},
 		{

@@ -8,7 +8,7 @@
 			<u-toast ref="uToast" />
 		</view>
 		
-		<view v-if="techAlarmList != null && techAlarmList.length === 0">
+		<view v-if="qualityAlarmList != null && qualityAlarmList.length === 0">
 			<u-empty text="质量报警数据为空" mode="list"></u-empty>
 		</view>
 		<view v-else>
@@ -20,7 +20,7 @@
 					</view>
 				</view>
 			</u-card>
-			<u-divider v-if="techAlarmList != null && techAlarmList.length > 0">没有更多了</u-divider>
+			<u-divider v-if="qualityAlarmList != null && qualityAlarmList.length > 0">没有更多了</u-divider>
 		</view>
 		
 		<u-back-top :scroll-top="scrollTop"></u-back-top>
@@ -29,7 +29,7 @@
 
 <script>
 	var _this;
-	import ingsysNavbar from "../../components/ingsys_navbar.vue"
+	import ingsysNavbar from "@/components/ingsys_navbar.vue"
 	import api from "@/api/tech-alarm.js"
 	export default {
 		components: {
@@ -40,6 +40,82 @@
 				scrollTop: 0,
 				noticeMsg: [],
 				qualityAlarmList: null
+			}
+		},
+		mounted() {
+			_this= this;
+			_this.getTechAlarmData();
+			uni.$on('updateTechAlarmData',() => {_this.getTechAlarmData()});
+		},
+		methods: {
+			onPageScroll(e) {
+				this.scrollTop = e.scrollTop;
+			},
+			onPullDownRefresh() {
+				_this.getTechAlarmData();
+			},
+			getTechAlarmData() {
+				uni.showLoading({
+					title: '加载中'
+				});
+				// 先获取当前登录用户id和所有的角色信息
+				let currentUser = uni.getStorageSync('currentUser');
+				let userId = currentUser.userId;
+				let roles = currentUser.roles;
+				let roleArray = roles.split(',');
+				if(roleArray.length === 1) {
+					// 只有一个角色
+					let params = {
+						roleGId: roles,
+						userID: userId,
+						processID: 'ZLBJ_Process'
+					}
+					api.getSingleRoleTechAlarmList(params).then(res => {
+						res.data.data.forEach(d => {d['queryRoleGId'] = res.config.data.roleGId})
+						_this.qualityAlarmList = res.data.data;
+						_this.noticeMsg = ['查询时间：'+res.data.lastTime + ', 共'+res.data.code+'条数据!'];
+					}).finally(() => {
+						uni.stopPullDownRefresh();  //停止下拉刷新动画
+						uni.hideLoading();
+					})
+				} else {
+					const paramArray = roleArray.map(role => ({roleGId: role, userID: userId, processID: 'ZLBJ_Process'}));
+					api.getMultiRoleTechAlarmList(paramArray).then(results => {
+						const list = [];
+						// 多角色需要加上查询时候的角色ID，以便后续处理使用
+						results.forEach(res => {
+							res.data.data.forEach(d => {d['queryRoleGId'] = res.config.data.roleGId})
+						})
+						results.forEach(res => {
+							list.push.apply(list,res.data.data)
+						})
+						_this.qualityAlarmList = list;
+						_this.noticeMsg = ['查询时间：'+results[0].data.lastTime + ', 共'+list.length+'条数据!'];
+					}).finally(() => {
+						uni.stopPullDownRefresh();  //停止下拉刷新动画
+						uni.hideLoading();
+					})
+				}
+			},
+			cardClick(item){
+				this.$u.route({
+					url: 'pages/tech/tech-alarm-item?item=' + encodeURIComponent(JSON.stringify(item))
+				})
+			}
+		},
+		filters: {
+			hour2Minutes(hour) {
+				if(!hour) {
+					return hour
+				}
+				let min = hour*60;
+				if(hour > 1) {
+					return hour.toFixed(1) + '时'
+				} else if(min >= 1) {
+					return Math.floor(min) + '分'
+				} else {
+					return Math.floor(min*60) + '秒'
+				}
 			}
 		}
 	}

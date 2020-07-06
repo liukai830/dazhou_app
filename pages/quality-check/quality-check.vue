@@ -7,7 +7,7 @@
 				</view>
 			</view>
 		</u-navbar>
-		
+		<u-notice-bar mode="vertical" :volume-icon="false" type="success" :list="noticeMsg"></u-notice-bar>
 		<view>
 			<u-toast ref="uToast" />
 		</view>
@@ -23,23 +23,10 @@
 			@confirm="onSelected" 
 			@cancel="onCancel"/>
 		
-		<view v-if="sampleRecordList === null || sampleRecordList.length === 0">
+		<view v-if="sampleRecordList != null && sampleRecordList.length === 0">
 			<u-empty text="质检数据为空" mode="list"></u-empty>
 		</view>
 		<view v-else>
-<!-- 			<uni-card v-for="(item,index) in sampleRecordList" extra=">" :key="index">
-			   <u-row>
-					 <u-col span="3"><view class="demo-layout bg-purple">类别:{{item.categoryName}}</view></u-col>
-					 <u-col span="5"><view class="demo-layout bg-purple-light">物料:{{item.sampleMaterial}}</view></u-col>
-					 <u-col span="4"><view class="demo-layout bg-purple-dark">采样点:{{item.samplingLocation}}</view></u-col>
-			  </u-row>
-				<u-row>
-					 <u-col span="12"><view class="demo-layout bg-purple">开始时间:{{item.planSampleAnalysisStartTime}}</view></u-col>
-				</u-row>
-				<u-row>
-					 <u-col span="12"><view class="demo-layout bg-purple">结束时间:{{item.auditedTime}}</view></u-col>
-				</u-row>
-			</uni-card> -->
 			<u-card v-for="(item,index) in sampleRecordList" :title="item.categoryName" 
 			:sub-title="'物料: '+item.sampleMaterial+' 采样点：'+item.samplingLocation" :key="index" @click="cardClick(item)">
 				<view class="" slot="body">
@@ -96,7 +83,8 @@
 				showPicker: false,
 				value: '',
 				scrollTop: 0,
-				sampleRecordList: []
+				sampleRecordList: [],
+				noticeMsg: []
 			}
 		},
 		onPullDownRefresh() {
@@ -135,9 +123,15 @@
 				if (!_this.validParams()) {
 					return;
 				}
-				console.log('fetch data')
+				uni.showLoading({
+				  title: '加载中'
+				});
 				api.getQaCheckList({startProductionDate:_this.startProductionDate,endProductionDate:_this.endProductionDate}).then(res => {
-						_this.sampleRecordList = res.data.data
+					_this.sampleRecordList = res.data.data
+					_this.noticeMsg = ['查询时间：'+res.data.lastTime + ', 共'+res.data.code+'条数据!'];
+				}).finally(() => {
+					uni.hideLoading()
+					uni.stopPullDownRefresh();  //停止下拉刷新动画
 				})
 			},
 			onSelected(e) {
@@ -145,8 +139,9 @@
 				if(e) {
 					_this.startProductionDate = e.value[0];
 					_this.endProductionDate = e.value[1];
+					_this.value = [_this.startProductionDate,_this.endProductionDate]
+					_this.getQaCheckData()
 				}
-				_this.getQaCheckData()
 			},
 			onCancel(e) {
 				this.showPicker = false;

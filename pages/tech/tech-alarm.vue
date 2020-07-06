@@ -74,6 +74,7 @@
 						res.data.data.forEach(d => {d['queryRoleGId'] = res.config.data.roleGId})
 						_this.techAlarmList = res.data.data;
 						_this.noticeMsg = ['查询时间：'+res.data.lastTime + ', 共'+res.data.code+'条数据!'];
+					}).finally(() => {
 						uni.stopPullDownRefresh();  //停止下拉刷新动画
 						uni.hideLoading();
 					})
@@ -81,7 +82,6 @@
 					const paramArray = roleArray.map(role => ({roleGId: role, userID: userId, processID: 'GYBJ_Process'}));
 					api.getMultiRoleTechAlarmList(paramArray).then(results => {
 						const list = [];
-						
 						// 多角色需要加上查询时候的角色ID，以便后续处理使用
 						results.forEach(res => {
 							res.data.data.forEach(d => {d['queryRoleGId'] = res.config.data.roleGId})
@@ -89,9 +89,9 @@
 						results.forEach(res => {
 							list.push.apply(list,res.data.data)
 						})
-						
 						_this.techAlarmList = list;
 						_this.noticeMsg = ['查询时间：'+results[0].data.lastTime + ', 共'+list.length+'条数据!'];
+					}).finally(() => {
 						uni.stopPullDownRefresh();  //停止下拉刷新动画
 						uni.hideLoading();
 					})
@@ -114,7 +114,8 @@
 					v14: item.v14,		// 工程单位
 					roleGId: item.queryRoleGId,
 					tableFlag: item.tableFlag,
-					gID: item.gID
+					gID: item.gID,
+					isOld: item.isOld
 				}
 				this.$u.route({
 					url: 'pages/tech/tech-alarm-item?item=' + encodeURIComponent(JSON.stringify(params))
@@ -134,6 +135,15 @@
 				} else {
 					return Math.floor(min*60) + '秒'
 				}
+			},
+			processStatus(node) {
+				let name = node
+				switch(node) {
+					case 1: name = '审核'; break;
+					case 2: name = '结果反馈'; break;
+					case 3: name = '知会接收'; break;
+				}
+				return name
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap">
 		<view>
-			<ingsysNavbar title="工艺报警处理" />
+			<ingsysNavbar title="质量报警处理" />
 		</view>
 		<view>
 			<u-toast ref="uToast" />
@@ -11,17 +11,18 @@
 		<u-form :model="item" ref="uForm" :errorType="errorType">
 			<u-form-item label-width="200" label="报警编号">{{item.v2}}</u-form-item>
 			<u-form-item label-width="200" label="拟票人/时间">{{item.v3}}/{{item.date1}}</u-form-item>
-			<u-form-item label-width="200" label="装置名称">{{item.departMent}}</u-form-item>
-			<u-form-item label-width="200" label="指标名称">{{item.v5}}</u-form-item>
-			<u-form-item label-width="200" label="指标位号">{{item.v4}}</u-form-item>
-			<u-form-item label-width="200" label="指标类别">{{item.v7}}</u-form-item>
-			<u-form-item label-width="200" label="班组">{{item.v6}}</u-form-item>
-			<u-form-item label-width="200" label="报警发生时间">{{item.date2}}</u-form-item>
-			<u-form-item label-width="200" label="报警时长">{{item.uDF1 | hour2Minutes}}</u-form-item>
-			<u-form-item label-width="200" label="报警类型">{{item.v12}}</u-form-item>
-			<u-form-item label-width="200" label="指标范围">{{item.v11}}</u-form-item>
-			<u-form-item label-width="200" label="工程单位">{{item.v14}}</u-form-item>
-			<u-form-item label-width="200" label="状态">{{item.isOld | processStatus}}</u-form-item>
+			<u-form-item label-width="200" label="装置名称">{{item.v13}}</u-form-item>
+			<u-form-item label-width="200" label="样品名称">{{item.v4}}</u-form-item>
+			<u-form-item label-width="200" label="样品编号">{{item.v5}}</u-form-item>
+			<u-form-item label-width="200" label="采样点">{{item.v10}}</u-form-item>
+			<u-form-item label-width="200" label="分析项目">{{item.v1}}</u-form-item>
+			<u-form-item label-width="200" label="分析值">{{item.uDF3}}</u-form-item>
+			<u-form-item label-width="200" label="生产日期"></u-form-item>
+			<u-form-item label-width="200" label="班次">{{item.v6}}}</u-form-item>
+			<u-form-item label-width="200" label="样品类型">{{item.v14}}</u-form-item>
+			<u-form-item label-width="200" label="上下限"><text space="emsp">{{item.uDF1}} - {{item.uDF2}}</text></u-form-item>
+			<u-form-item label-width="200" label="异常级别">{{item.v7}}</u-form-item>
+			
 			<u-gap height="10" bg-color="#fff"></u-gap>
 			<u-divider>处理信息</u-divider>
 			<u-form-item label-width="200" label="处理意见" prop="count">
@@ -47,9 +48,6 @@
 		components: {
 			ingsysNavbar
 		},
-		mounted() {
-			// this.item = this.$store.state.currentTechAlarmItem
-		},
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
 		},
@@ -59,23 +57,7 @@
 		},
 		data() {
 			return {
-				item: {
-					departMent: null,	// 装置名称
-					v5: null,		// 指标名称
-					v4: null,		// 指标位号
-					v7: null, 	// 指标类别
-					v6: null,		// 班组
-					v12: null,	// 报警类型
-					v11: null,	// 指标范围
-					v14: null,	// 工程单位
-					v2: null,		// 报警编号
-					v3: null, 	// 拟票人
-					date1: null,// 拟票时间
-					count: null,// 处理意见
-					roleGId: null,
-					tableFlag: null,
-					gID: null
-				},
+				item: {},
 				rules: {
 					count: [
 						{
@@ -100,7 +82,7 @@
 					
 					let currentUser = uni.getStorageSync('currentUser');
 					let params = [{
-						roleGId: _this.item.roleGId,
+						roleGId: _this.item.queryRoleGId,
 						tableFlag: _this.item.tableFlag,
 						userID: currentUser.userId,
 						userName: currentUser.userName,
@@ -150,15 +132,6 @@
 				} else {
 					return Math.floor(min*60) + '秒'
 				}
-			},
-			processStatus(node) {
-				let name = node
-				switch(node) {
-					case 1: name = '审核'; break;
-					case 2: name = '结果反馈'; break;
-					case 3: name = '知会接收'; break;
-				}
-				return name
 			}
 		}
 	}

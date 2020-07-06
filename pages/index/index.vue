@@ -15,7 +15,7 @@
 				<view class="iconfont" style="color: #00aa00; fontSize: 66rpx">&#xe600</view>
 				<view class="grid-text">工艺报警</view>
 			</u-grid-item>
-			<u-grid-item>
+			<u-grid-item @click="menuClick('/pages/quality-alarm/quality-alarm')">
 				<view class="iconfont" style="color: #78b3ff; fontSize: 66rpx">&#xe611</view>
 				<view class="grid-text">质量报警</view>
 			</u-grid-item>
