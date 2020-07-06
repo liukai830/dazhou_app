@@ -20,22 +20,35 @@
 			:begin-text="'开始时间'" 
 			:end-text="'结束时间'" 
 			:show-seconds="true" 
-			@confirm="onSelected" />
+			@confirm="onSelected" 
+			@cancel="onCancel"/>
 		
 		<view v-if="sampleRecordList === null || sampleRecordList.length === 0">
 			<u-empty text="质检数据为空" mode="list"></u-empty>
 		</view>
 		<view v-else>
-			<uni-card v-for="(item,index) in sampleRecordList" extra=">" :key="index">
+<!-- 			<uni-card v-for="(item,index) in sampleRecordList" extra=">" :key="index">
 			   <u-row>
 					 <u-col span="3"><view class="demo-layout bg-purple">类别:{{item.categoryName}}</view></u-col>
 					 <u-col span="5"><view class="demo-layout bg-purple-light">物料:{{item.sampleMaterial}}</view></u-col>
 					 <u-col span="4"><view class="demo-layout bg-purple-dark">采样点:{{item.samplingLocation}}</view></u-col>
 			  </u-row>
 				<u-row>
-					 <u-col span="12"><view class="demo-layout bg-purple">生产日期:{{item.productionDate}}</view></u-col>
+					 <u-col span="12"><view class="demo-layout bg-purple">开始时间:{{item.planSampleAnalysisStartTime}}</view></u-col>
 				</u-row>
-			</uni-card>
+				<u-row>
+					 <u-col span="12"><view class="demo-layout bg-purple">结束时间:{{item.auditedTime}}</view></u-col>
+				</u-row>
+			</uni-card> -->
+			<u-card v-for="(item,index) in sampleRecordList" :title="item.categoryName" 
+			:sub-title="'物料: '+item.sampleMaterial+' 采样点：'+item.samplingLocation" :key="index" @click="cardClick(item)">
+				<view class="" slot="body">
+					<view>
+						<view><text space='ensp'>开始时间：{{item.planSampleAnalysisStartTime}}</text></view>
+						<view><text space='ensp'>结束时间：{{item.auditedTime}}</text></view>
+					</view>
+				</view>
+			</u-card>
 			<u-divider>没有更多了</u-divider>
 		</view>
 		
@@ -135,8 +148,8 @@
 				}
 				_this.getQaCheckData()
 			},
-			onSelected() {
-				console.log('quxiao')
+			onCancel(e) {
+				this.showPicker = false;
 			}
 		}
 	}

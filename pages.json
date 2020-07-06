@@ -58,6 +58,9 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path": "pages/test"
 		}
 	],
 	// "tabBar": {
@@ -78,7 +81,7 @@
 	// },
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "dazhou-app",
+		"navigationBarTitleText": "瓮福达州生产运营管理系统",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}

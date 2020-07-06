@@ -58,9 +58,6 @@
 				uni.showLoading({
 				    title: '加载中'
 				});
-				setTimeout(function () {
-				  uni.hideLoading();
-				}, 10000);
 				// 先获取当前登录用户id和所有的角色信息
 				let currentUser = uni.getStorageSync('currentUser');
 				let userId = currentUser.userId;

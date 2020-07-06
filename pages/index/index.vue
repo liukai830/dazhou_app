@@ -1,8 +1,9 @@
 <template>
 	<view>
-		<u-navbar title="dazhou-app" :background="background" back-icon-name="list" :is-back="false" >
+		<u-navbar title="瓮福达州生产运营管理系统" title-width="500" :background="background" back-icon-name="list" :is-back="false" >
 			<view class="map-wrap">
 				<u-icon name="list" size="36" class="wrap" color="rgb(96, 98, 102)"></u-icon>
+				<!-- <text>瓮福达州生产运营管理系统</text> -->
 			</view>
 		</u-navbar>
 		<u-grid :col="6" :border="false">
@@ -65,6 +66,7 @@
 					// 渐变色
 					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
 				},
+				tabNames: [{name: '班报'}, {name: '日报'}, {name: '月报'}],
 				pointList: [
 					// {name: '磷酸二铵', alarm: false},
 					// {name: 'PA浓缩B', alarm: false},
@@ -76,7 +78,6 @@
 					// {name: 'PPA预处理', alarm: false},
 					// {name: '公用工程', alarm: true}
 				],
-				tabNames: [{name: '班报'}, {name: '日报'}, {name: '月报'}],
 				currentTab: 0,
 				// reports: ['这是班报','这是日报','这是月报']
 				reports: []

@@ -1,5 +1,5 @@
 <template>
-	<view class="wrap">
+	<view>
 		<view>
 			<ingsysNavbar title="质量报警" />
 		</view>
@@ -8,12 +8,11 @@
 			<u-toast ref="uToast" />
 		</view>
 		
-		<view v-if="qualityAlarmList != null && qualityAlarmList.length === 0">
-			<u-empty text="工艺报警数据为空" mode="list"></u-empty>
+		<view v-if="techAlarmList != null && techAlarmList.length === 0">
+			<u-empty text="质量报警数据为空" mode="list"></u-empty>
 		</view>
-		
 		<view v-else>
-			<u-card v-for="(item,index) in qualityAlarmList" :title="item.v13" :sub-title="item.v5+item.v12" :key="index" @click="cardClick(item)">
+			<u-card v-for="(item,index) in qualityAlarmList" :title="item.departMent" :sub-title="item.v5+' '+item.v12" :key="index" @click="cardClick(item)">
 				<view class="" slot="body">
 					<view>
 						<view><text space='ensp'>开始时间：{{item.date2}}  等级：<text style="color: red;">{{item.v7}}</text></text></view>
@@ -21,11 +20,10 @@
 					</view>
 				</view>
 			</u-card>
-			<u-divider v-if="qualityAlarmList != null && qualityAlarmList.length > 0">没有更多了</u-divider>
+			<u-divider v-if="techAlarmList != null && techAlarmList.length > 0">没有更多了</u-divider>
 		</view>
 		
 		<u-back-top :scroll-top="scrollTop"></u-back-top>
-		
 	</view>
 </template>
 

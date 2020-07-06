@@ -57,6 +57,7 @@
 					let resdata = res.data;					
 					_this.storeList = resdata.data;
 					_this.lastTime = ['查询时间：'+resdata.lastTime+'，共 '+_this.storeList.length+' 条数据'];
+				}).finally(() => {
 					uni.hideLoading()
 					uni.stopPullDownRefresh();  //停止下拉刷新动画
 				})

@@ -75,10 +75,12 @@
 				setTimeout(function(){
 					_this.isClicked=false
 				},3000)
-				this.$refs.uToast.show({
+				uni.showToast({
+					icon: 'none',
+					position: 'bottom',
 					title: '登陆中',
-					type: 'default'
-				})	
+					duration: 3000
+				});
 				api.login({'userID':this.userId,'password':this.password}).then(res => {
 					let resdata = res.data;
 					if(!resdata.success) {
